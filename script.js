@@ -1,3 +1,4 @@
+//Configuration for the game.
 var config = {
     type: Phaser.AUTO,
     width: 800,
@@ -18,6 +19,8 @@ var config = {
 };
 let score = 0;
 var game = new Phaser.Game(config)
+
+//Loading the images.
 function preload() {
     this.load.image('car', 'assets/bird.png')
     this.load.image('pipe', 'assets/pipe.png')
@@ -26,6 +29,7 @@ function preload() {
 }
 function create() {
 
+    //Score tracker.
     function add_score(car,star) {
         score += 1
         scoreText.setText(`Score: ${score}`)
@@ -37,6 +41,7 @@ function create() {
     ground.setCollideWorldBounds(true)
     ground.setScale(2)
     car.body.setGravityY(200)
+    //Adding space key to phaser game.
     space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
     pipes = this.physics.add.group()
     stars = this.physics.add.group()
@@ -46,20 +51,25 @@ function create() {
     this.physics.add.collider(pipes,car)
     this.physics.add.collider(pipes,ground)
     this.physics.add.collider(pipes,pipes)
+    //Adds pipe every 2500 milliseconds.
     id = setInterval(add_pipe,2500)
+    //blits score text on screen.
     let scoreText = this.add.text(16,16,'Score: ' + score, {fontSize: '32px', fill: '#000'})
 }
 
 function update() {
+    //If space is down, flappy bird will jump.
     if (space.isDown && car.body.touching) {
         car.setVelocityY(-200)
     }
 }
 
+//Ends game.
 function end_game() {
     this.physics.pause()
 }
 
+//Add pipe function.
 function add_pipe() {
     num = Math.floor(Math. random()*6) + 3
     for (let i = 1; i < 10; i++) { 
